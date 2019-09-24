@@ -19,7 +19,15 @@
 <h5>Write a note, save the content to a text file by clicking save. Clear to default string by pressing reset.</h5>
 <div style="border: 1px black solid; min-height: 200px; max-width: 500px" id="notepad" contenteditable></div>
 <div class="mt-1"><button type="button" class="btn btn-success" onclick="saveFile()">Save</button><span class="ml-1"><button type="button" class="btn btn-danger" onclick="reset()">Reset</button></span></div>
+<div class="mt-1">
+    <button id="count">Count</button>
+    <div id="result">
+        Words: <span id="wordCount">0</span><br/>          
+        Characters: <span id="charCountNoSpace">0</span>
+    </div>
 </div>
+</div>
+
 
 </body>
 
@@ -46,6 +54,29 @@
         let file = new File([document.querySelector('#notepad').innerHTML], "NoteTaker.txt", {type: "text/plain;charset=utf-8"});
         saveAs(file);
     }
+    function wordCounter() {
+        var value = document.querySelector('#notepad').innerHTML
+        var regex = /\s+/gi;
+        var wordCount = value.trim().replace(regex, ' ').split(' ').length;
+        var charCountNoSpace = value.replace(regex, '').length;
+
+        if (value.length == 0) {
+            $('#wordCount').html(0);
+            $('#charCountNoSpace').html(0);
+            return;
+        }
+
+        $('#wordCount').html(wordCount);
+        $('#charCountNoSpace').html(charCountNoSpace);
+    };
+
+    $(document).ready(function() {
+        $('#count').click(wordCounter);
+        $('#notepad').change(wordCounter);
+        $('#notepad').keydown(wordCounter);
+        $('#notepad').keypress(wordCounter);
+        $('#notepad').keyup(wordCounter);
+    });
 
 </script>
 </html>
